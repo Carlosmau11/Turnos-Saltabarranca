@@ -1,0 +1,39 @@
+body{
+    background: url(Banner2.jpg) no-repeat center top;
+}
+
+h3{
+     font-size: 30px;
+     font-family: sans-serif;
+}
+
+h3.text-center{
+    color: #fff;
+}
+
+h4.text-center{
+    color: #fff;
+}
+
+h5.text-center{
+    color: #fff;
+}
+
+
+.avatar{
+    width: 300px;
+    height: 300px;
+    margin-left: 380px;
+}
+
+.control-label{
+    color: #fff;
+}
+
+.card{
+    background-color: #732626;
+}
+
+.card-body{
+    background-color: #732626;
+}
