@@ -103,11 +103,22 @@ button {
             })
     }
 
+    function waiting_queue(){
+      $.ajax({
+        url:'ajax.php?action=waiting_queue',
+        success:function(resp){
+          resp = JSON.parse(resp)
+          $('#squeue_next').html(resp.data.queue_no)
+        }
+      })
+    }
 
 </script>
 <div class="row">
     <div class="col-md-4 text-center">
-        <a href="javascript:void(0)" class="btn btn-primary" onclick="queueNow()">Siguiente turno</a>
+        <a href="javascript:void(0)" class="btn btn-primary" onclick="queueNow()">Siguientes turnos</a>
+        <br><br>
+        <a href="javascript:void(0)" class="btn btn-primary" onclick="waiting_queue()">Turnos en espera</a>
     </div>
 <div class="col-md-4">
     <div class="card">
@@ -117,6 +128,7 @@ button {
                 <hr class="divider">
                 <h5 class="text-center" >Siguientes turnos</h5>
                 <hr class="divider">
+                <h3 class="text-center"  id="squeue_next"></h3>
             </div>
         </div>
     </div>

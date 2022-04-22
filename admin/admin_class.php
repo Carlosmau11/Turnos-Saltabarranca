@@ -224,13 +224,24 @@ function save_queue(){
 		}
 		$data .= ", queue_no = '$queue_no' ";
 		
-			$save = $this->db->query("INSERT INTO queue_list  set ".$data);
+			$save = $this->db->query("INSERT INTO queue_list set ".$data);
 
 		if($save)
 			return $this->db->insert_id;
+
+			$query = $this->db->query("SELECT MAX(queue_no) AS queue_no FROM queue_list");
+			if($query->num_rows > 0){
+				foreach ($query->fetch_array() as $key => $value) {
+					if(!is_numeric($key))
+					$data[$key] = $value;
+				}
+				return json_encode(array("data"=>$data));
+			}
 	}
 
 
+
+	/*************AQUI OBTENGO LOS DATOS*************** */
 	function get_queue(){
 		extract($_POST);
 		$query = $this->db->query("SELECT q.*,t.name as wname FROM queue_list q inner join transaction_windows t on t.id = q.window_id where date(q.date_created) = '".date('Y-m-d')."' and q.transaction_id = '$id' and q.status = 1 order by q.id desc limit 1 ");
@@ -252,7 +263,8 @@ function save_queue(){
 
 	    $this->db->query("UPDATE queue_list set status = 1 , window_id = '".$_SESSION['login_window_id']."' where transaction_id = '$tid' and  date(date_created) = '".date('Y-m-d')."' and status=0 order by id asc limit 1");
 
-	    $query = $this->db->query("SELECT q.*,t.name as wname FROM queue_list q inner join transaction_windows t on t.id = q.window_id where date(q.date_created) = '".date('Y-m-d')."' and q.window_id = '".$_SESSION['login_window_id']."' and q.status = 1 order by q.id desc limit 1  ");
+	    $query = $this->db->query("SELECT q.*,t.name as wname FROM queue_list q inner join transaction_windows t on t.id = q.window_id where date(q.date_created) = '".date('Y-m-d')."' and q.window_id = '".$_SESSION['login_window_id']."' and q.status = 1 order by q.id desc limit 1");
+		
 	    if($query->num_rows > 0){
 	        foreach ($query->fetch_array() as $key => $value) {
 	            if(!is_numeric($key))
@@ -261,7 +273,17 @@ function save_queue(){
 	        return json_encode(array('status'=>1,"data"=>$data));
 	    }else{
 	        return json_encode(array('status'=>0));
+	    }
+	}
 
+	function waiting_queue(){
+		$query = $this->db->query("SELECT MAX(queue_no) AS queue_no FROM  queue_list");
+	    if($query->num_rows > 0){
+	        foreach ($query->fetch_array() as $key => $value) {
+	            if(!is_numeric($key))
+	            $data[$key] = $value;
+	        }
+	        return json_encode(array("data"=>$data));
 	    }
 	}
 }

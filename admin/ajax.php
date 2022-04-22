@@ -92,9 +92,10 @@ if($action == "update_queue"){
 		echo $update;
 }
 
-if($action == "next_queue"){
-	$next = $crud->next_queue();
+if($action == "waiting_queue"){
+	$next = $crud->waiting_queue();
 	if($next){
 		echo $next;
 	}
 }
+

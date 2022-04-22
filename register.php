@@ -37,12 +37,12 @@
 							
 							<input type="hidden" id="name" name="name" class="form-control">
 						</div>
-						<!---------------AQUI DECLARO LA PRESIDENCIA------------------------------->
+						<!---------------AQUI GUARDO LOS TURNOS EN MI BASE DE DATOS------------------------------->
 						<div class="form-group">
 							<select name="transaction_id" id="transaction_id" class="custom-select browser-default select2" require>
 									<option></option>
 									<?php 
-										$trans = $conn->query("SELECT * FROM transactions where status = 1 order by name asc");
+										$trans = $conn->query("SELECT * FROM transactions order by name asc");
 										while($row=$trans->fetch_assoc()):
 									?>
 									<option value="<?php echo $row["id"] ?>"><?php echo $row['name'] ?></option>
@@ -50,11 +50,11 @@
 							</select>
 						</div>
 						<!---------------------------------------------------------------------------------------------------->
-
+											
 
 						<div class="row">
 							<div class="col-md-12">
-								<button class="btn btn-sm btn-primary col-md-3 float-right">Guardar</button>
+								<button class="btn btn-sm btn-primary col-md-3 float-right" ()>Guardar</button>
 							</div>
 						</div>
 					</form>

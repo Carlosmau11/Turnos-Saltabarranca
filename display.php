@@ -20,6 +20,12 @@ h3{
 	background-color: red;
 }
 
+h3.text-center-2{
+	font-size: 18px;
+	color: #000000;
+	background-color: yellow;
+}
+
 h2{
 	font-size: 20px;
 }
@@ -136,8 +142,11 @@ h2{
 
 </style>
 <?php include "admin/db_connect.php" ?>
+
 <?php 
-$tname = $conn->query("SELECT * FROM transactions where id = 2")->fetch_array()['name'];
+
+/**PRESIDENCIA */
+$tname = $conn->query("SELECT * FROM transactions where id = 6")->fetch_array()['name'];
 function nserving(){
 	include "admin/db_connect.php";
 
@@ -155,7 +164,8 @@ function nserving(){
 	$conn->close();
 }
 
-$tname2 = $conn->query("SELECT * FROM transactions where id = 3")->fetch_array()['name'];
+/**CATASTRO */
+$tname2 = $conn->query("SELECT * FROM transactions where id = 7")->fetch_array()['name'];
 function nserving2(){
 	include "admin/db_connect.php";
 
@@ -173,7 +183,7 @@ function nserving2(){
 	$conn->close();
 }
 
-$tname3 = $conn->query("SELECT * FROM transactions where id = 4")->fetch_array()['name'];
+$tname3 = $conn->query("SELECT * FROM transactions where id = 8")->fetch_array()['name'];
 function nserving3(){
 	include "admin/db_connect.php";
 
@@ -190,6 +200,9 @@ function nserving3(){
 	}
 	$conn->close();
 }
+
+
+
 ?>
 
 
@@ -201,31 +214,15 @@ function nserving3(){
 					<h4 class="text-center text-white"><b><?php echo strtoupper($tname) ?></b></h4>
 					<h3 class="text-center"><b>Ocupado con turno</b></h3>
 					<h5 class="text-center" id="squeue"></h5>
+					<h3 class="text-center-2"><b>Turnos en espera</b></h3>
+					<h5 class="text-center" id="next"></h5>
 					<hr class="divider">
 				</div>
 			</div>
-
-			<div class="card">
-				<div class="textos">
-					<h4 class="text-center text-white"><b><?php echo strtoupper($tname2) ?></b></h4>
-					<h3 class="text-center"><b>Ocupado con turno</b></h3>
-					<h5 class="text-center" id="squeue2"></h5>
-					<hr class="divider">
-				</div>
-			</div>
-
-			<div class="card">
-				<div class="textos">
-					<h4 class="text-center text-white"><b><?php echo strtoupper($tname3) ?></b></h4>
-					<h3 class="text-center"><b>Ocupado con turno</b></h3>
-					<h5 class="text-center" id="squeue3"></h5>
-					<hr class="divider">
-				</div>
 			</div>
 			<!---------------------------------------------------------------------------->
 		</div>
 	</div>
-<!---------------------------------------------------------------------------->
 
 <div class="right-side">
 	<?php
@@ -293,12 +290,10 @@ function nserving3(){
 			$.ajax({
 				url:'admin/ajax.php?action=get_queue',
 				method:"POST",
-				data:{id:'<?php echo 2?>'},
+				data:{id:'<?php echo 6?>'},
 				success:function(resp){
 					resp = JSON.parse(resp)
-					$('#sname').html(resp.data.name)
 					$('#squeue').html(resp.data.queue_no)
-					$('#window').html(resp.data.wname)
 				}
 			})
 			
@@ -309,14 +304,29 @@ function nserving3(){
 		var queue = '';
 		var renderServe = setInterval(function(){
 			$.ajax({
-				url:'admin/ajax.php?action=get_queue',
+				url:'admin/ajax.php?action=waiting_queue',
 				method:"POST",
-				data:{id:'<?php echo 3?>'},
+				data:{id:'<?php echo 6?>'},
 				success:function(resp){
 					resp = JSON.parse(resp)
-					$('#sname2').html(resp.data.name)
+					$('#next').html(resp.data.queue_no)
+				}
+			})
+			
+		},1500)
+	})
+
+	/****************************************************************** */
+	$(document).ready(function(){
+		var queue = '';
+		var renderServe = setInterval(function(){
+			$.ajax({
+				url:'admin/ajax.php?action=get_queue',
+				method:"POST",
+				data:{id:'<?php echo 7?>'},
+				success:function(resp){
+					resp = JSON.parse(resp)
 					$('#squeue2').html(resp.data.queue_no)
-					$('#window2').html(resp.data.wname)
 				}
 			})
 			
@@ -327,17 +337,47 @@ function nserving3(){
 		var queue = '';
 		var renderServe = setInterval(function(){
 			$.ajax({
-				url:'admin/ajax.php?action=get_queue',
+				url:'admin/ajax.php?action=waiting_queue',
 				method:"POST",
-				data:{id:'<?php echo 4?>'},
+				data:{id:'<?php echo 7?>'},
 				success:function(resp){
 					resp = JSON.parse(resp)
-					$('#sname3').html(resp.data.name)
-					$('#squeue3').html(resp.data.queue_no)
-					$('#window3').html(resp.data.wname)
+					$('#next1').html(resp.data.queue_no)
 				}
 			})
 			
+		},1500)
+	})
+
+	/****************************************************************** */
+	$(document).ready(function(){
+		var queue = '';
+		var renderServe = setInterval(function(){
+			$.ajax({
+				url:'admin/ajax.php?action=get_queue',
+				method:"POST",
+				data:{id:'<?php echo 8?>'},
+				success:function(resp){
+					resp = JSON.parse(resp)
+					$('#squeue3').html(resp.data.queue_no)
+				}
+			})
+			
+		},1500)
+	})
+
+	$(document).ready(function(){
+		var queue = '';
+		var renderServe = setInterval(function(){
+			$.ajax({
+				url:'admin/ajax.php?action=waiting_queue',
+				method:"POST",
+				data:{id:'<?php echo 8?>'},
+				success:function(resp){
+					resp = JSON.parse(resp)
+					$('#next2').html(resp.data.queue_no)
+				}
+			})
 		},1500)
 	})
 </script>
